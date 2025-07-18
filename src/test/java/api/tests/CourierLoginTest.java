@@ -2,6 +2,7 @@ package api.tests;
 
 import api.clients.ScooterClient;
 import api.models.Courier;
+import api.models.CourierLogin;
 import api.utils.CleanupHelper;
 import api.utils.TestDataFactory;
 import io.qameta.allure.Step;
@@ -10,7 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 public class CourierLoginTest {
     private Courier courier;
@@ -28,7 +29,7 @@ public class CourierLoginTest {
         login(courier)
                 .then()
                 .statusCode(200)
-                .body("id", notNullValue());
+                .body("id", allOf(notNullValue(), instanceOf(Integer.class), greaterThan(0)));
     }
 
     @Test
@@ -45,17 +46,19 @@ public class CourierLoginTest {
                 .statusCode(404);
     }
 
-    @Step("Создать курьера")
+    @Step("РЎРѕР·РґР°С‚СЊ РєСѓСЂСЊРµСЂР°")
     private Response createCourier(Courier data) {
         return ScooterClient.givenAuth()
                 .body(data)
                 .when().post("/api/v1/courier");
     }
 
-    @Step("Логин курьера")
+    @Step("Р›РѕРіРёРЅ РєСѓСЂСЊРµСЂР°")
     private Response login(Courier data) {
+        CourierLogin request = new CourierLogin(data.getLogin(), data.getPassword());
+
         return ScooterClient.givenAuth()
-                .body("{\"login\":\"" + data.getLogin() + "\",\"password\":\"" + data.getPassword() + "\"}")
+                .body(request)
                 .when().post("/api/v1/courier/login");
     }
 

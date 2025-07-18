@@ -2,6 +2,7 @@ package api.tests;
 
 import api.clients.ScooterClient;
 import api.models.Courier;
+import api.models.CourierLogin;
 import api.utils.CleanupHelper;
 import api.utils.TestDataFactory;
 import io.qameta.allure.Step;
@@ -38,20 +39,22 @@ public class CourierCreateTest {
         createCourier(courier)
                 .then()
                 .statusCode(409)
-                .body("message", containsString("Этот логин уже используется"));
+                .body("message", containsString("Р­С‚РѕС‚ Р»РѕРіРёРЅ СѓР¶Рµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ"));
     }
 
-    @Step("Создать курьера")
+    @Step("РЎРѕР·РґР°С‚СЊ РєСѓСЂСЊРµСЂР°")
     private Response createCourier(Courier data) {
         return ScooterClient.givenAuth()
                 .body(data)
                 .when().post("/api/v1/courier");
     }
 
-    @Step("Логин курьера")
+    @Step("Р›РѕРіРёРЅ РєСѓСЂСЊРµСЂР°")
     private int loginCourier(Courier data) {
+        CourierLogin loginRequest = new CourierLogin(data.getLogin(), data.getPassword());
+
         return ScooterClient.givenAuth()
-                .body("{\"login\":\"" + data.getLogin() + "\",\"password\":\"" + data.getPassword() + "\"}")
+                .body(loginRequest)
                 .when().post("/api/v1/courier/login")
                 .then().statusCode(200)
                 .extract().path("id");
@@ -63,7 +66,7 @@ public class CourierCreateTest {
         createCourier(courier)
                 .then()
                 .statusCode(400)
-                .body("message", containsString("Недостаточно данных для создания учетной записи"));
+                .body("message", containsString("РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РґР°РЅРЅС‹С… РґР»СЏ СЃРѕР·РґР°РЅРёСЏ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё"));
     }
 
     @Test
@@ -72,7 +75,7 @@ public class CourierCreateTest {
         createCourier(courier)
                 .then()
                 .statusCode(400)
-                .body("message", containsString("Недостаточно данных для создания учетной записи"));
+                .body("message", containsString("РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РґР°РЅРЅС‹С… РґР»СЏ СЃРѕР·РґР°РЅРёСЏ СѓС‡РµС‚РЅРѕР№ Р·Р°РїРёСЃРё"));
     }
 
     @Test

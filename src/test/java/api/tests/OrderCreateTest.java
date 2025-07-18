@@ -11,7 +11,7 @@ import org.junit.runners.Parameterized;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(Parameterized.class)
 public class OrderCreateTest {
@@ -21,7 +21,7 @@ public class OrderCreateTest {
         this.order = order;
     }
 
-    @Parameterized.Parameters(name = "÷‚ÂÚ: {0}")
+    @Parameterized.Parameters(name = "–¶–≤–µ—Ç: {0}")
     public static Object[] data() {
         return new Object[]{
                 TestDataFactory.randomOrder().setColor(List.of("BLACK")),
@@ -36,10 +36,10 @@ public class OrderCreateTest {
         createOrder(order)
                 .then()
                 .statusCode(201)
-                .body("track", notNullValue());
+                .body("track", allOf(notNullValue(), instanceOf(Integer.class), greaterThan(0)));
     }
 
-    @Step("—ÓÁ‰‡Ú¸ Á‡Í‡Á")
+    @Step("–°–æ–∑–¥–∞—Ç—å –∑–∞–∫–∞–∑")
     private Response createOrder(Order o) {
         return ScooterClient.givenAuth()
                 .body(o)

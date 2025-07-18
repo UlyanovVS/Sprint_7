@@ -9,13 +9,13 @@ import java.util.UUID;
 public class TestDataFactory {
     public static Courier randomCourier() {
         String uuid = UUID.randomUUID().toString().substring(0, 5);
-        return new Courier("user_" + uuid, "pass_" + uuid, "Имя" + uuid);
+        return new Courier("user_" + uuid, "pass_" + uuid, "РРјСЏ" + uuid);
     }
 
     public static Order randomOrder() {
         return new Order(
-                "Иван", "Иванов", "Москва", "Сокольники",
-                "88888888888", 2, "01.08.2025", "Комментарий для теста",
+                "РРІР°РЅ", "РРІР°РЅРѕРІ", "РњРѕСЃРєРІР°", "РЎРѕРєРѕР»СЊРЅРёРєРё",
+                "88888888888", 2, "01.08.2025", "РљРѕРјРјРµРЅС‚Р°СЂРёР№ РґР»СЏ С‚РµСЃС‚Р°",
                 List.of("BLACK")
         );
     }
